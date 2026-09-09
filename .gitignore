@@ -7,3 +7,4 @@ vault/data-backup/
 
 __pycache__/
 *.pyc
+actions-runner/
