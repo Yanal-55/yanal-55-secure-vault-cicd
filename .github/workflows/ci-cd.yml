@@ -22,6 +22,19 @@ jobs:
       - name: Show Docker Compose version
         run: docker compose version
 
+      - name: Create test environment
+        run: |
+          cat > .env.test <<'EOF'
+          POSTGRES_DB=secureapp
+          POSTGRES_USER=secureuser
+          POSTGRES_PASSWORD=SecurePassword123
+          DB_NAME=secureapp
+          DB_USER=secureuser
+          DB_PASSWORD=SecurePassword123
+          DB_HOST=database
+          DB_PORT=5432
+          EOF
+
       - name: Check project files
         run: |
           ls -la
@@ -45,4 +58,3 @@ jobs:
       - name: Stop application
         if: always()
         run: docker compose down
-
