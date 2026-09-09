@@ -24,7 +24,7 @@ jobs:
 
       - name: Create test environment
         run: |
-          cat > .env.test <<'EOF'
+          cat > .env <<'EOF'
           POSTGRES_DB=secureapp
           POSTGRES_USER=secureuser
           POSTGRES_PASSWORD=SecurePassword123
@@ -42,19 +42,19 @@ jobs:
           ls -la frontend
 
       - name: Build application
-        run: docker compose build
+        run: docker compose -p secure-vault-ci-${{ github.run_id }} build
 
       - name: Start application
-        run: docker compose up -d
+        run: docker compose -p secure-vault-ci-${{ github.run_id }} up -d
 
       - name: Check containers
-        run: docker compose ps
+        run: docker compose -p secure-vault-ci-${{ github.run_id }} ps
 
       - name: Test backend
         run: |
           sleep 10
-          curl -f http://localhost:5000/ || true
+          curl -f http://localhost:5000/
 
       - name: Stop application
         if: always()
-        run: docker compose down
+        run: docker compose -p secure-vault-ci-${{ github.run_id }} down -v --remove-orphans
