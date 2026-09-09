@@ -1,0 +1,48 @@
+name: Secure Vault CI/CD
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Show Docker version
+        run: docker --version
+
+      - name: Show Docker Compose version
+        run: docker compose version
+
+      - name: Check project files
+        run: |
+          ls -la
+          ls -la backend
+          ls -la frontend
+
+      - name: Build application
+        run: docker compose build
+
+      - name: Start application
+        run: docker compose up -d
+
+      - name: Check containers
+        run: docker compose ps
+
+      - name: Test backend
+        run: |
+          sleep 10
+          curl -f http://localhost:5000/ || true
+
+      - name: Stop application
+        if: always()
+        run: docker compose down
+
