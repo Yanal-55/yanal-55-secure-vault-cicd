@@ -29,7 +29,7 @@ services:
       database:
         condition: service_healthy
     ports:
-      - "5000:5000"
+      - "5050:5000"
 
   frontend:
     build:
@@ -42,3 +42,5 @@ services:
 
 volumes:
   postgres_data:
+
+
